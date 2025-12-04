@@ -1,0 +1,8 @@
+# Sys
+.DS_Store
+
+# Python
+__pycache__/
+
+# Datasets
+/cs231n/datasets/

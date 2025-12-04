@@ -11,8 +11,10 @@ import platform
 def load_pickle(f):
     version = platform.python_version_tuple()
     if version[0] == "2":
+        # 直接反序列化
         return pickle.load(f)
     elif version[0] == "3":
+        # 带编码读取，兼容Python2序列化的数据
         return pickle.load(f, encoding="latin1")
     raise ValueError("invalid python version: {}".format(version))
 
@@ -23,6 +25,7 @@ def load_CIFAR_batch(filename):
         datadict = load_pickle(f)
         X = datadict["data"]
         Y = datadict["labels"]
+        # NCHW -> NHWC
         X = X.reshape(10000, 3, 32, 32).transpose(0, 2, 3, 1).astype("float")
         Y = np.array(Y)
         return X, Y
@@ -37,6 +40,7 @@ def load_CIFAR10(ROOT):
         X, Y = load_CIFAR_batch(f)
         xs.append(X)
         ys.append(Y)
+    # 把5个batch在第0维拼接起来
     Xtr = np.concatenate(xs)
     Ytr = np.concatenate(ys)
     del X, Y
