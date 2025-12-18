@@ -3,6 +3,8 @@
 
 # Python
 __pycache__/
+**.so
+**.o
 
 # Datasets
 /cs231n/datasets/
